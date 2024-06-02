@@ -8,4 +8,6 @@ COPY .eslintrc .eslintrc
 
 RUN npm install
 
+ENV APPID="01de6726130b583aa51b03d44414d800"
+
 CMD ["npm", "start"]
