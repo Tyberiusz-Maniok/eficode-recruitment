@@ -1,11 +1,11 @@
-FROM node:21-alpine AS weatherapp_backend
+FROM node:21-alpine
 
-WORKDIR /app/backend
+WORKDIR /app
 
-COPY . .
+COPY src src
+COPY package.json package.json
+COPY .eslintrc .eslintrc
 
 RUN npm install
-
-EXPOSE 8080
 
 CMD ["npm", "start"]
