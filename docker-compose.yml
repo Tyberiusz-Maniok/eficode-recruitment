@@ -1,0 +1,14 @@
+version: 3.9
+
+services:
+  backend:
+    build: backend
+    environment:
+      APPID: 01de6726130b583aa51b03d44414d800
+
+  frontend:
+    build: frontend
+    environment:
+      ENDPOINT: backend
+    depends_on:
+      - backend
