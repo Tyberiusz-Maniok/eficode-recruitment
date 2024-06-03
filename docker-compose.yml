@@ -5,6 +5,8 @@ services:
     build: backend
     environment:
       APPID: 01de6726130b583aa51b03d44414d800
+    volumes:
+      - ./backend/src:/app/src
     ports:
       - "9000:9000"
 
@@ -12,7 +14,13 @@ services:
     build: frontend
     environment:
       ENDPOINT: "http://0.0.0.0:9000/api"
+    volumes:
+      - ./frontend/src:/app/src
     ports:
       - "8000:8000"
     depends_on:
       - backend
+
+volumes:
+  backend: {}
+  frontend: {}
