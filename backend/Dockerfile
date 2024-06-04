@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY src src
 COPY package.json package.json
-COPY .eslintrc .eslintrc
 
 RUN npm install
 
