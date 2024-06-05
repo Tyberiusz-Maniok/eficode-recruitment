@@ -1,0 +1,31 @@
+- name: install app
+  hosts: all
+  vars:
+    clone_path: "{{ repo_path | default('./weatherapp') }}"
+    front_env: "{{ front_env_file | default('./frontend/.env') }}"
+    back_env: "{{ back_env_file | default('./backend/.env') }}"
+
+  tasks:
+    - name: install docker
+      ansible.builtin.package:
+        name: docker
+        state: latest
+     
+    - name: pull app repository
+      ansible.builtin.git:
+        repo: https://github.com/Tyberiusz-Maniok/eficode-recruitment.git
+        dest: "{{ clone_path }}"
+        single_branch: yes
+        version: main
+
+    - name: copy frontend env file
+      ansible.builtin.copy:
+        src: "{{ front_env }}"
+        dest: "{{ clone_path + '/frontend/.env' }}"
+        mode: u=r,g=r,o=r
+
+    - name: copy backend env file
+      ansible.builtin.copy:
+        src: "{{ back_env }}"
+        dest: "{{ clone_path + '/backend/.env' }}"
+        mode: u=r,g=r,o=r

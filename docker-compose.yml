@@ -3,8 +3,8 @@ version: "3.9"
 services:
   backend:
     build: backend
-    environment:
-      APPID: 01de6726130b583aa51b03d44414d800
+    env_file:
+      - ./backend/.env
     volumes:
       - ./backend/src:/app/src
     ports:
@@ -12,8 +12,8 @@ services:
 
   frontend:
     build: frontend
-    environment:
-      ENDPOINT: "http://0.0.0.0:9000/api"
+    env_file:
+      - ./frontend/.env
     volumes:
       - ./frontend/src:/app/src
     ports:
