@@ -39,7 +39,9 @@ To run the app locally you need [nodejs](https://nodejs.org/). Both backend and 
 
 This repository includes [Ansible](https://www.ansible.com/) playbook that can install docker and the app on specified hosts, to create ready to deploy package.
 
-To run the palybook execute `ansible-playbook ./ansible/install.yml -i selected_inventory_file`. Currently 2 inventory files are provided: **ansible/local.ini** and **ansible/cloud.ini**(incomplete). **.env** files can be created either before the playbook is executed so they are automatically copied to cloned repository or after, directly in the clone. If those files are not in their default locations you must declare `front_env_file` and `back_env_file` variables for ansible. Another configurable parameter is `repo_clone_dir` which specifies direcotry path which will become the cloned app repository. To pass those variables you could for example fill them in in **ansible/vars-sample.yml** file and add `--extra-vars @ansible/vars-sample.yml` option to ansible command. For more details refer to [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html).
+To run the palybook execute `ansible-playbook ./ansible/install.yml -i selected_inventory_file`. Currently 2 inventory files are provided: **ansible/local.ini** and **ansible/cloud.ini**(incomplete).
+
+**.env** files can be created either before the playbook is executed so they are automatically copied to cloned repository or after, directly in the clone. If those files are not in their default locations you must declare `front_env_file` and `back_env_file` variables for ansible. Another configurable parameter is `repo_clone_dir` which specifies direcotry path which will become the cloned app repository. To pass those variables you could for example fill them in in **ansible/vars-sample.yml** file and add `--extra-vars @ansible/vars-sample.yml` option to ansible command. For more details refer to [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html).
 
 
 ## Would be nice to have / not finished
