@@ -44,8 +44,6 @@ To run the palybook execute `ansible-playbook ./ansible/install.yml -i selected_
 
 ## Would be nice to have / not finished
 
-- Resolve issues while connecting to backend via container network e.g. `ENPOINT=backend:9000/api`. This seems to be CORS related. Resolving this would llow to run app without needing to expose backend port.
-
 - Fix issues with Azure Application Gateway. You should be able to access the app via reverse proxy at [20.215.88.100](http://20.215.88.100/), but currently it returns 404 status code.
 
 - Expose cloud instance via ssh. With the way app was deployed (Azure App Service) this may prove troublesome, since App Service allows only one port to be exposed to the ouside world.
