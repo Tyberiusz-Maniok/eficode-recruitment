@@ -1,59 +1,57 @@
 # Weatherapp
 
-There was a beautiful idea of building an app that would show the upcoming weather. The developers wrote a nice backend and a frontend following the latest principles and - to be honest - bells and whistles. However, the developers did not remember to add any information about the infrastructure or even setup instructions in the source code.
-Luckily we now have [docker compose](https://docs.docker.com/compose/) saving us from installing the tools on our computer, and making sure the app looks (and is) the same in development and in production. All we need is someone to add the few missing files!
+Simple web app with the purpose of displaying current weather in configured location.
 
-The idea of the exercise is to improve the bare-bone piece of code (i.e. the weatherapp) and ensure there's adequate infrastructure around it. 
-In real life scenario we might suggest to our customers to leverage cloud services to just run code in a serverless fashion - but that would make it difficult to evaluate technical skills - and that's the whole point of this exercise, ain't it? 
+Cloud instance has been deployed on Azure and can be found at https://weatherapp-front.azurewebsites.net/
+
+## Running the app 
+
+### In containers
+
+The easiest way to run the app is by using [docker compose](https://docs.docker.com/compose/). First you need to create **.env** files in **frontend** and **backend** directories. Then copy the contents of **.env.sample** files in their respective directories to newly created **.env** files, fill in missing values and replace or add other configuration properties if neccessary (refer to [Environmental properties](###Environmental-properties) for more details).
+After environment has been set, execute `docker-compose up` in root directory of the project to start the containers.
+
+Alternatively if you want to separately build and run the container run `docker build -t your_container_name path_to_directory_with_dockerfile` to build the container and `docker run -t your_container_name` to run it.
+
+### Locally
+
+To run the app locally you need [nodejs](https://nodejs.org/). Both backend and frontend can be run by executing `npm i && npm start` in their respective directories. Neccessary environmental properties still need to be set.
+
+## Environmental properties
+
+### Backend
+
+| Property     | Description                                                                 | Default value                          |
+|--------------|-----------------------------------------------------------------------------|----------------------------------------|
+| APPID        | Aplication key for [openweathermap](http://openweathermap.org/)             |                                        |
+| PORT         | TCP port on which the app will listen                                       | 9000                                   |
+| MAP_ENDPOINT | Base URL for weathermap API calls                                           | http://api.openweathermap.org/data/2.5 |
+| TARGET_CITY  | City parameter for weathermap API calls                                     | Helsinki,fi                            |
+
+### Frontend
+
+| Property     | Description                                                                 | Default value                          |
+|--------------|-----------------------------------------------------------------------------|----------------------------------------|
+| ENDPOINT     | Base URL for backend API calls                                              | http://0.0.0.0:9000/api                |
+| PORT         | TCP port on which the app will listen                                       | 8000                                   |
+
+## Installing app using Ansible
+
+This repository includes [Ansible](https://www.ansible.com/) playbook that can install docker and the app on specified hosts, to create ready to deploy package.
+
+To run the palybook execute `ansible-playbook ./ansible/install.yml -i selected_inventory_file`. Currently 2 inventory files are provided: **ansible/local.ini** and **ansible/cloud.ini**(incomplete). **.env** files can be created either before the playbook is executed so they are automatically copied to cloned repository or after, directly in the clone. If those files are not in their default locations you must declare `front_env_file` and `back_env_file` variables for ansible. Another configurable parameter is `repo_clone_dir` which specifies direcotry path which will become the cloned app repository. To pass those variables you could for example fill them in in **ansible/vars-sample.yml** file and add `--extra-vars @ansible/vars-sample.yml` option to ansible command. For more details refer to [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html).
 
 
-## Returning your solution via Github
-Use Github to work on the solution and hand it in. Don't forget to update the README file to make it clear what did you concentrate on.
+## Would be nice to have / not finished
 
-* Make a copy of this repository in your own Github account (do not fork unless you really want to be public).
-* Create a personal repository in Github.
-* Make changes, commit them, and push them in your own repository.
-* Send us the url where to find the code.
+- Resolve issues while connecting to backend via container network e.g. `ENPOINT=backend:9000/api`. This seems to be CORS related. Resolving this would llow to run app without needing to expose backend port.
 
-## Exercises
+- Fix issues with Azure Application Gateway. You should be able to access the app via reverse proxy at [20.215.88.100](http://20.215.88.100/), but currently it returns 404 status code.
 
-Here are some suggestions in different categories that you can do to make the app better. Before starting you need to get yourself an API key to make queries in the [openweathermap](http://openweathermap.org/). You can run the app locally using `npm i && npm start`.
-Remember, this is not a test for a developer position, so we're not after extensive changes in javascript code. Rather, we'd like to see you be able to work comfortably with containers, VMs in cloud and ideally, Ansible.
+- Expose cloud instance via ssh. With the way app was deployed (Azure App Service) this may prove troublesome, since App Service allows only one port to be exposed to the ouside world.
 
-### Docker
+- It would make more sense to store ansible related files in another repository, so they are not confused with something neccessary for the app and not downloaded by the playbook, but for the sake of keeping this exersice in a single repo this was not done.
 
-* Add **Dockerfile**'s in the *frontend* and the *backend* directories to run them virtually on any environment having [docker](https://www.docker.com/) installed. It should work by saying e.g. `docker build -t weatherapp_backend . && docker run --rm -i -p 9000:9000 --name weatherapp_backend -t weatherapp_backend`. If it doesn't, remember to check your api key first.
+- Configure cloud inventory for ansible once the cloud instance is available via ssh.
 
-* Add a **docker-compose.yml** -file connecting the frontend and the backend, enabling running the app in a connected set of containers.
-
-* The developers are still keen to run the app and its pipeline on their own computers. Share the development files for the container by using volumes, and make sure the containers are started with a command enabling hot reload.
-
-### Cloud hosting
-
-* Set up the weather service in a free cloud hosting service, e.g. [Azure](https://azure.microsoft.com/en-us/free/), [AWS](https://aws.amazon.com/free/) or [Google Cloud](https://cloud.google.com/free/).
-* Enable external access to weather app via HTTP reverse proxy. We suggest creating one compute instance e.g. for AWS one EC2 instance, that will host both weather app and before mentioned proxy. Remember that Weather App should be exposed in a secure way.
-* Enable external SSH access and add id_rsa_internship.pub key, which you can find in this repository. We would like to check your work so grant us admin rights on your test system.
-
-### Ansible
-
-* Write [Ansible](http://docs.ansible.com/ansible/intro.html) playbooks for installing [docker](https://www.docker.com/) and the app itself. These playbooks should work both for local and cloud environment.
-
-#### Terraform
-
-* Write [Terraform](https://www.terraform.io/) configuration files to set up infrastructure required to run the app in the cloud provider of your choice.
-
-### Documentation
-
-* Remember to update the README
-
-* Use descriptive names and add comments in the code when necessary
-
-### ProTips
-
-* The app must be ready to deploy and work flawlessly.
-
-* Detailed instructions to run the app should be included in your forked version because a customer would expect detailed instructions also.
-
-* Extra points for making sure the app could be deployed with as few manual steps as possible.
-
-* Feel free to add would-be-nice-to-haves in the app / infra setup that you didn't have time to complete as possible further improvements in README.
+- Create Terraform configuration.
