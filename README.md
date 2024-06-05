@@ -8,7 +8,7 @@ Cloud instance has been deployed on Azure and can be found at https://weatherapp
 
 ### In containers
 
-The easiest way to run the app is by using [docker compose](https://docs.docker.com/compose/). First you need to create **.env** files in **frontend** and **backend** directories. Then copy the contents of **.env.sample** files in their respective directories to newly created **.env** files, fill in missing values and replace or add other configuration properties if neccessary (refer to [Environmental properties](##Environmental-properties) for more details).
+The easiest way to run the app is by using [docker compose](https://docs.docker.com/compose/). First you need to create **.env** files in **frontend** and **backend** directories. Then copy the contents of **.env.sample** files in their respective directories to newly created **.env** files, fill in missing values and replace or add other configuration properties if neccessary (refer to [Environmental properties](#environmental-properties) for more details).
 After environment has been set, execute `docker-compose up` in root directory of the project to start the containers.
 
 Alternatively if you want to separately build and run the container run `docker build -t your_container_name path_to_directory_with_dockerfile` to build the container and `docker run -t your_container_name` to run it.
