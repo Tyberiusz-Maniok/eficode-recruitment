@@ -46,7 +46,7 @@ To run the palybook execute `ansible-playbook ./ansible/install.yml -i selected_
 
 - Fix issues with Azure Application Gateway. You should be able to access the app via reverse proxy at [20.215.88.100](http://20.215.88.100/), but currently it returns 404 status code.
 
-- Expose cloud instance via ssh. With the way app was deployed (Azure App Service) this may prove troublesome, since App Service allows only one port to be exposed to the ouside world.
+- Expose cloud instance via ssh. With the way app was deployed (Azure App Service) this may prove troublesome, since App Service allows only one port to be exposed to the ouside world. For this reason it might be neccessary to redeploy the app using another Azure feature.
 
 - It would make more sense to store ansible related files in another repository, so they are not confused with something neccessary for the app and not downloaded by the playbook, but for the sake of keeping this exersice in a single repo this was not done.
 
